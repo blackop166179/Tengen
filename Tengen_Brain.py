@@ -5,17 +5,24 @@ LA = 5
 LB = 4
 LC = 1
 
+print("Input Target X Value")
 Tx = int(input())
+print("Input Target Y Value")
 Ty = int(input())
+print("Input desired angle for arm C to be")
 aC = int(input())
 
-#Error check, needs Ymax
+# Domain and Range Error check
 Xmax = LA + LB + LC
 if Tx > Xmax:
-  print("Domain error. Tx too big.")
+  print("Domain error. target X value too big.")
+   print("exiting, retry")
   sys.exit()
-#insert Ymax, include a part about negative inputs
-
+Ymax = math.sin(math.acos(Tx/Xmax))*Xmax
+if Ty > Ymax:
+  print("Range error. target Y value too big.")
+  print("exiting, retry")
+  sys.exit()
 
 #Find PB (Bx,By)
 if aC < 0:
@@ -71,4 +78,3 @@ if YN == 0:
 elif YN == 1:
   aA = math.degrees(math.cos(oPAy/LA))
   
-print(aA,aB)
