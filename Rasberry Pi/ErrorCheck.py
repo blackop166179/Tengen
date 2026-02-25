@@ -1,11 +1,10 @@
 import math
 import json
 
-with open ('Tengen_Memory2.json', 'r') as GVAL:
-  data = json.load(GVAL)
-  Tic = data['Tic']
-
 def errorCheck(LA, LB, LC):
+    with open ('Tengen_Memory2.json', 'r') as GVAL:
+        data = json.load(GVAL)
+        Tic = data['Tic']
     while True:
         try:
             if Tic == 0:  
