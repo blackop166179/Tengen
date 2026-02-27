@@ -1,20 +1,5 @@
 import math
 import json
-import ErrorCheck
-
-
-with open ('Tengen_Memory1.json', 'r') as f:
-  data = json.load(f)
-  CaA = data['CaA']
-  CaB = data['CaB']
-  CaC = data['CaC']
-
-with open ('Tengen_Memory2.json', 'w') as GVAL:        
-  json.dump({'Tx': 0, 'Ty': 0, 'aC': 90, 'Tic': 0}, GVAL)
-
-LA = 5
-LB = 4
-LC = 1
 
 def errorCheck(LA, LB, LC):
     with open ('Tengen_Memory2.json', 'r') as GVAL:
@@ -84,8 +69,6 @@ def errorCheck(LA, LB, LC):
     del(By_check, Bx_check, eps, rad, Xmax, Ymax, min_ld2, max_ld2)
     return Tx, Ty, aC
 
-Tx, Ty, aC = ErrorCheck.errorCheck(LA, LB, LC)
-
 def Target_Lock (Tx, Ty, aC, AoB):
 
   #Find PB (Bx,By)
@@ -153,10 +136,14 @@ def Target_Lock (Tx, Ty, aC, AoB):
   elif AoB == 0:
     return(aB,aD)
   del(PAx,PAy,oPAx,oPAy,Bx,By,PB,LD,aD,taB,taA,Al,BoD,AlDx,AlDy,PAlD,M)
-  
-
 
 def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
+
+  with open ('Tengen_Memory1.json', 'r') as f:
+    data = json.load(f)
+    CaA = data['CaA']
+    CaB = data['CaB']
+    CaC = data['CaC']
   #calculate changes
   dA = CaA - aA
   dB = CaB - aB
@@ -167,24 +154,9 @@ def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
     doA = CaA - oaA
     if abs(doA) < abs(dA):
       dA = doA
+  
+  with open ('Tengen_Memory1.json', 'w') as f:
+    json.dump({'CaA': aA, 'CaB': aB, 'CaC': aC}, f)
   del (CaA, CaB, CaC, aA, aB, aC, oaA, doA)
   return(dA, dB, dC)
 
-aA, oaA = Target_Lock(Tx,Ty,aC, 1)
-
-aB, aD = Target_Lock(Tx,Ty,aC, 0)
-
-dA, dB, dC = angle_change(CaA,CaB,CaC,aA,aB,aC,oaA)
-
-
-#send to arduino
-print (aA)
-print (aB)
-print (aC)
-print (dA)
-print (dB)
-print (dC)
-
-
-with open ('Tengen_Memory1.json', 'w') as f:
-  json.dump({'CaA': aA, 'CaB': aB, 'CaC': aC}, f)
