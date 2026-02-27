@@ -1,10 +1,16 @@
 import math
 import json
+from pathlib import Path
+
+data_foler = Path ("Rasberry Pi/Memory")
+Tengen_Memory = data_foler / "Tengen_Memory.json"
+
+with open (Tengen_Memory, 'r') as f:
+  data = json.load(f)
+
 
 def errorCheck(LA, LB, LC):
-    with open ('Tengen_Memory2.json', 'r') as GVAL:
-        data = json.load(GVAL)
-        Tic = data['Tic']
+    Tic = data["Cortex"]["Tic"]
     while True:
         try:
             if Tic == 0:  
@@ -14,11 +20,11 @@ def errorCheck(LA, LB, LC):
                 aC = 90
 
             else:
-                with open ('Tengen_Memory2.json', 'r') as GVAL:
-                    data = json.load(GVAL)
-                    Tx = data['Tx']
-                    Ty = data['Ty']
-                    aC = data['aC']
+                with open ('Tengen_Memory.json', 'r') as f:
+                    data = json.load(f)
+                    Tx = data["Cortex"]["Tx"]
+                    Ty = data["Cortex"]["Ty"]
+                    aC = data["Cortex"]["aC"]
                 break
 
              #bad value check
@@ -61,8 +67,9 @@ def errorCheck(LA, LB, LC):
                 raise ValueError("Range error. Target Y value too big.")
 
             
-            with open ('Tengen_Memory2.json', 'w') as GVAL:
-                json.dump({'Tx': float(Tx), 'Ty': float(Ty), 'aC': float(aC), 'Tic': 1}, GVAL)
+            data["Cortex"].update({'Tx': Tx, 'Ty': Ty, 'aC': aC, 'Tic': 1})
+            with open (Tengen_Memory, 'w') as f:
+                json.dump(data, f, indent=4)
             break 
         except ValueError:
             print("Rebooting")
@@ -139,11 +146,11 @@ def Target_Lock (Tx, Ty, aC, AoB):
 
 def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
 
-  with open ('Tengen_Memory1.json', 'r') as f:
+  with open ('Tengen_Memory.json', 'r') as f:
     data = json.load(f)
-    CaA = data['CaA']
-    CaB = data['CaB']
-    CaC = data['CaC']
+    CaA = data["Hippocampus"]["CaA"]
+    CaB = data["Hippocampus"]["CaB"]
+    CaC = data["Hippocampus"]["CaC"]
   #calculate changes
   dA = CaA - aA
   dB = CaB - aB
@@ -155,8 +162,9 @@ def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
     if abs(doA) < abs(dA):
       dA = doA
   
-  with open ('Tengen_Memory1.json', 'w') as f:
-    json.dump({'CaA': aA, 'CaB': aB, 'CaC': aC}, f)
+  data["Hippocampus"].update({'CaA': aA, 'CaB': aB, 'CaC': aC})
+  with open (Tengen_Memory, 'w') as f:
+    json.dump(data, f, indent=4)
   del (CaA, CaB, CaC, aA, aB, aC, oaA, doA)
   return(dA, dB, dC)
 
