@@ -1,13 +1,13 @@
 {
-    "Hippocampus" : {
-        "CaA" : 0,
-        "CaB" : 0,
-        "CaC" : 0
-    },
-    "Cortex" : {
-        "Tx" : 0, 
-        "Ty" : 0, 
+    "Cortex": {
+        "Tx": 0,
+        "Ty": 0,
         "aC": 90,
         "Tic": 0
+    },
+    "Hippocampus": {
+        "CaA": 31.25070828234775,
+        "CaB": 156.44450106336853,
+        "CaC": 90
     }
 }

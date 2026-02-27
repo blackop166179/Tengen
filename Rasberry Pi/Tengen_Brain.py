@@ -2,14 +2,19 @@ import math
 import json
 from pathlib import Path
 
-data_foler = Path ("Rasberry Pi/Memory")
-Tengen_Memory = data_foler / "Tengen_Memory.json"
+data_folder = Path ("Rasberry Pi/Memory")
+Tengen_Memory = data_folder / "Tengen_Memory.json"
 
-with open (Tengen_Memory, 'r') as f:
-  data = json.load(f)
-
+def ready():
+  with open (Tengen_Memory, 'r') as f:
+    data = json.load(f)
+  data["Cortex"].update({'Tx': 0, 'Ty': 0, 'aC': 90, 'Tic': 0})
+  with open (Tengen_Memory, 'w') as f:
+      json.dump(data, f, indent=4)
 
 def errorCheck(LA, LB, LC):
+    with open (Tengen_Memory, 'r') as f:
+      data = json.load(f)
     Tic = data["Cortex"]["Tic"]
     while True:
         try:
@@ -20,7 +25,7 @@ def errorCheck(LA, LB, LC):
                 aC = 90
 
             else:
-                with open ('Tengen_Memory.json', 'r') as f:
+                with open (Tengen_Memory, 'r') as f:
                     data = json.load(f)
                     Tx = data["Cortex"]["Tx"]
                     Ty = data["Cortex"]["Ty"]
@@ -73,10 +78,9 @@ def errorCheck(LA, LB, LC):
             break 
         except ValueError:
             print("Rebooting")
-    del(By_check, Bx_check, eps, rad, Xmax, Ymax, min_ld2, max_ld2)
     return Tx, Ty, aC
 
-def Target_Lock (Tx, Ty, aC, AoB):
+def Target_Lock (Tx, Ty, aC, AoB, LA, LB, LC):
 
   #Find PB (Bx,By)
   if aC < 0:
@@ -142,11 +146,10 @@ def Target_Lock (Tx, Ty, aC, AoB):
   
   elif AoB == 0:
     return(aB,aD)
-  del(PAx,PAy,oPAx,oPAy,Bx,By,PB,LD,aD,taB,taA,Al,BoD,AlDx,AlDy,PAlD,M)
 
-def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
+def angle_change (aA, aB, aC, oaA):
 
-  with open ('Tengen_Memory.json', 'r') as f:
+  with open (Tengen_Memory, 'r') as f:
     data = json.load(f)
     CaA = data["Hippocampus"]["CaA"]
     CaB = data["Hippocampus"]["CaB"]
@@ -165,6 +168,5 @@ def angle_change (CaA, CaB, CaC, aA, aB, aC, oaA):
   data["Hippocampus"].update({'CaA': aA, 'CaB': aB, 'CaC': aC})
   with open (Tengen_Memory, 'w') as f:
     json.dump(data, f, indent=4)
-  del (CaA, CaB, CaC, aA, aB, aC, oaA, doA)
   return(dA, dB, dC)
 

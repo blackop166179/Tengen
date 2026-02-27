@@ -1,18 +1,16 @@
-import json
 import Tengen_Brain
 
 LA = 5
 LB = 4
 LC = 1
 
-with open ('Tengen_Memory.json', 'w') as f:        
-    json.dump({'Tx': 0, 'Ty': 0, 'aC': 90, 'Tic': 0}, f)
+Tengen_Brain.ready()
 
 Tx, Ty, aC = Tengen_Brain.errorCheck(LA, LB, LC)
 
-aA, oaA = Tengen_Brain.Target_Lock(Tx,Ty,aC, 1)
+aA, oaA = Tengen_Brain.Target_Lock(Tx,Ty,aC, 1, LA, LB, LC)
 
-aB, aD = Tengen_Brain.Target_Lock(Tx,Ty,aC, 0)
+aB, aD = Tengen_Brain.Target_Lock(Tx,Ty,aC, 0, LA, LB, LC)
 
 dA, dB, dC = Tengen_Brain.angle_change(aA,aB,aC,oaA)
 
